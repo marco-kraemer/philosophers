@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 08:26:40 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/08 14:16:42 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/08 15:41:56 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 
 void	init_values(char **argv, t_data *data)
 {
+	struct timeval start;
+
+	gettimeofday(&start, NULL);
+	data->start_usec = start.tv_usec;
+	data->start_sec = start.tv_sec;
 	data->num_philosophers = ft_atoi(argv[1]);
 	data->time_to_die = ft_atoi(argv[2]);
 	data->time_to_eat = ft_atoi(argv[3]);
@@ -27,11 +32,14 @@ void	init_values(char **argv, t_data *data)
 void	*start_simulation(void *arg)
 {
 	t_data	data;
+	struct timeval current;
 
 	data = *(t_data *)arg;
-	printf("Incio: \n");
-	usleep(100);
-	printf("%i\n", data.num_philosophers);
+	usleep(20 * USEC_TO_MS);
+	gettimeofday(&current, NULL);
+	data.current_sec = current.tv_sec;
+	data.current_usec = current.tv_usec;
+	printf("TIME: %ld\n", TIME_MS);
 	return (arg);
 }
 
