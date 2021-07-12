@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 08:26:40 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/12 14:07:14 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/12 14:11:59 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	wait(int length)
 {
 	long	time;
 
-	time = ft_time();
-	while (ft_time() < time + length)
+	time = get_time();
+	while (get_time() < time + length)
 		usleep(length);
 }
 
@@ -66,7 +66,6 @@ int	main(int argc, char **argv)
 {
 	t_data	*data;
 	int 	i;
-	struct timeval start;
 
 	if (argc != 5 && argc != 6)
 		return (1);
@@ -85,9 +84,7 @@ int	main(int argc, char **argv)
 			data[i].time_must_eat = 0;
 		pthread_mutex_init(&data[i].right_fork, NULL);
 		if (i != 0)
-			data[i].left_fork = data[i - 1].right_fork;
-		else
-			data[i].left_fork = NULL;
+			data[i].left_fork = &data[i - 1].right_fork;
 		data[i].start_time = get_time();
 		data[i].philosopher = i + 1;
 		i++;

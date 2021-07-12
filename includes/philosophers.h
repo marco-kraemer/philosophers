@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 11:22:27 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/12 13:53:37 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/12 14:09:35 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ typedef	struct s_data {
 	int	time_to_sleep;
 	int	time_must_eat;
 
-	int	right_fork;
-	int	left_fork;
+	pthread_mutex_t	right_fork;
+	pthread_mutex_t	*left_fork;
 
-	long	start_time
+	long	start_time;
 }		t_data;
 
 int		ft_atoi(const char *nptr);
