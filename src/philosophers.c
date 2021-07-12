@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 08:26:40 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/12 14:11:59 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/12 14:24:54 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,21 @@ void	*start_simulation(void *arg)
 	t_data	*data;
 
 	data = (t_data *)arg;
-	// se for par colocar pra dormir, se for impar comer
 	if ((data->philosopher % 2) == 0)
 		wait(((float)data->time_to_eat));
 	while (TRUE)
 	{
 		pthread_mutex_lock(&data->right_fork);
+		printf("%ld %i has taken a fork\n", ( get_time() - data->start_time), data->philosopher);
+		pthread_mutex_lock(data->left_fork);
+		printf("%ld %i has taken a fork\n", ( get_time() - data->start_time), data->philosopher);
+		printf("%ld %i is eating\n", ( get_time() - data->start_time), data->philosopher);
+		wait(data->time_to_eat);
+		pthread_mutex_unlock(data->left_fork);
+		pthread_mutex_unlock(&data->right_fork);
+		printf("%ld %i is sleeping\n", ( get_time() - data->start_time), data->philosopher);
+		wait(data->time_to_sleep);
+		printf("%ld %i is thinking\n", ( get_time() - data->start_time), data->philosopher);
 	}
 	return (arg);
 }
@@ -49,6 +58,8 @@ void	create_threads(t_data *data)
 {
 	int	i;
 	pthread_t	th;
+	pthread_mutex_t	state;
+	pthread_mutex_t	meals;
 
 	i = 0;
 	while (i < data[0].num_philosophers)
@@ -56,9 +67,12 @@ void	create_threads(t_data *data)
 		pthread_create(&th, NULL, start_simulation, &data[i]);
 		i++;
 	}
+	pthread_mutex_lock(&state);
 	i = 0;
 	while (i < data[0].num_philosophers)
 		pthread_mutex_destroy(&data[i++].right_fork);
+	pthread_mutex_destroy(&state);
+	pthread_mutex_destroy(&meals);
 	free(data);
 }
 
