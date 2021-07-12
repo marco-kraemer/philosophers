@@ -6,13 +6,13 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 11:22:27 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/12 09:16:08 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/12 13:53:37 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHERS
 # define PHILOSOPHERS
-# define TIME_MS (((data.current_sec - data.start_sec) * 1000000 + data.current_usec - data.start_usec) / 1000)
+# define TIME_MS current.tv_sec * 1000 + current.tv_usec / 1000
 # define USEC_TO_MS 1000
 # define TRUE 1
 # define FALSE 0
@@ -31,10 +31,10 @@ typedef	struct s_data {
 	int	time_to_sleep;
 	int	time_must_eat;
 
-	long start_sec;
-	long start_usec;
-	long current_sec;
-	long current_usec;
+	int	right_fork;
+	int	left_fork;
+
+	long	start_time
 }		t_data;
 
 int		ft_atoi(const char *nptr);
