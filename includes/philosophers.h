@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 11:22:27 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/08 15:41:32 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/12 09:16:08 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define PHILOSOPHERS
 # define TIME_MS (((data.current_sec - data.start_sec) * 1000000 + data.current_usec - data.start_usec) / 1000)
 # define USEC_TO_MS 1000
+# define TRUE 1
+# define FALSE 0
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -21,6 +23,8 @@
 #include <sys/time.h>
 
 typedef	struct s_data {
+	int	philosopher;
+
 	int	num_philosophers;
 	int	time_to_die;
 	int	time_to_eat;

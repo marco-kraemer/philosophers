@@ -6,71 +6,83 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 08:26:40 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/08 15:41:56 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/12 09:19:30 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
-void	init_values(char **argv, t_data *data)
+void	get_current_time(t_data *data)
 {
-	struct timeval start;
+	struct timeval current;
 
-	gettimeofday(&start, NULL);
-	data->start_usec = start.tv_usec;
-	data->start_sec = start.tv_sec;
-	data->num_philosophers = ft_atoi(argv[1]);
-	data->time_to_die = ft_atoi(argv[2]);
-	data->time_to_eat = ft_atoi(argv[3]);
-	data->time_to_sleep = ft_atoi(argv[4]);
-	if (argv[4])
-		data->time_must_eat = ft_atoi(argv[5]);
-	else
-		data->time_must_eat = 0;
+	gettimeofday(&current, NULL);
+	data->current_sec = current.tv_sec;
+	data->current_usec = current.tv_usec;
 }
 
 void	*start_simulation(void *arg)
 {
 	t_data	data;
-	struct timeval current;
+	static int 	philosopher;
 
 	data = *(t_data *)arg;
-	usleep(20 * USEC_TO_MS);
-	gettimeofday(&current, NULL);
-	data.current_sec = current.tv_sec;
-	data.current_usec = current.tv_usec;
-	printf("TIME: %ld\n", TIME_MS);
+		printf("oi\n");
+
+//	while (TRUE)
+//	{
+		get_current_time(&data);
+	//	if (TIME_MS < 3)
+		printf("PHILOSPHER %i --> %ld\n", data.philosopher,TIME_MS);
+//		usleep(1 * USEC_TO_MS);
+//	}
+	philosopher++;
+	pthread_exit(NULL);
 	return (arg);
 }
 
-void	create_threads(t_data data)
+void	create_threads(t_data *data)
 {
 	int	i;
-	pthread_t	ph[data.num_philosophers];
+	pthread_t	th;
 
 	i = 0;
-	while (i < data.num_philosophers)
+	while (i < data[0].num_philosophers)
 	{
-		pthread_create(&ph[i], NULL, &start_simulation, &data);
+		data[i].philosopher = i;
+		pthread_create(&th, NULL, start_simulation, &data[i]);
 		i++;
 	}
-	i = 0;
-	while (i < data.num_philosophers)
-	{
-		pthread_join(ph[i], NULL);
-		i++;
-	}		
 }
 
 int	main(int argc, char **argv)
 {
-	t_data	data;
+	t_data	*data;
+	int 	i;
+	struct timeval start;
 
 	if (argc != 5 && argc != 6)
 	{
 		printf("Incorrect number of arguments\n");
 		exit(EXIT_FAILURE);
 	}
-	init_values(argv, &data);
+	if (!(data = malloc(sizeof(t_data) * ft_atoi(argv[1]))))
+		return (1);
+	gettimeofday(&start, NULL);
+	i = 0;
+	while (i < ft_atoi(argv[1]))
+	{
+		data[i].start_usec = start.tv_usec;
+		data[i].start_sec = start.tv_sec;
+		data[i].num_philosophers = ft_atoi(argv[1]);
+		data[i].time_to_die = ft_atoi(argv[2]);
+		data[i].time_to_eat = ft_atoi(argv[3]);
+		data[i].time_to_sleep = ft_atoi(argv[4]);
+		if (argv[4])
+			data[i].time_must_eat = ft_atoi(argv[5]);
+		else
+			data[i].time_must_eat = 0;
+		i++;
+	}
 	create_threads(data);
 }
