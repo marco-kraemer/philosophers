@@ -6,11 +6,27 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 09:47:01 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/13 09:47:43 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/13 09:54:15 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
+
+void	printf_message(int rule, t_data *data)
+{
+	if (rule == 0)
+		printf("%ld %i has taken a fork\n", (get_time() - data->start_time),
+			data->philosopher);
+	else if (rule == 1)
+		printf("%ld %i is eating\n", (get_time() - data->start_time),
+			data->philosopher);
+	else if (rule == 2)
+		printf("%ld %i is sleeping\n", (get_time() - data->start_time),
+			data->philosopher);
+	else
+		printf("%ld %i is thinking\n", (get_time() - data->start_time),
+			data->philosopher);
+}
 
 void	*start_simulation(void *arg)
 {
@@ -24,23 +40,18 @@ void	*start_simulation(void *arg)
 	while (TRUE)
 	{
 		pthread_mutex_lock(&data->right_fork);
-		printf("%ld %i has taken a fork\n", (get_time() - data->start_time),
-			data->philosopher);
+		printf_message(0, data);
 		pthread_mutex_lock(data->left_fork);
-		printf("%ld %i has taken a fork\n", (get_time() - data->start_time),
-			data->philosopher);
+		printf_message(0, data);
 		data->last_time_eat = get_time();
-		printf("%ld %i is eating\n", (get_time() - data->start_time),
-			data->philosopher);
+		printf_message(1, data);
 		wait(data->time_to_eat);
 		pthread_mutex_unlock(data->left_fork);
 		pthread_mutex_unlock(&data->right_fork);
 		data->counter += 1;
-		printf("%ld %i is sleeping\n", (get_time() - data->start_time),
-			data->philosopher);
+		printf_message(2, data);
 		wait(data->time_to_sleep);
-		printf("%ld %i is thinking\n", (get_time() - data->start_time),
-			data->philosopher);
+		printf_message(3, data);
 	}
 	return (arg);
 }

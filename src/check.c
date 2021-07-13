@@ -6,12 +6,11 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 09:46:58 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/13 09:47:22 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/13 09:50:07 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
-
 
 void	*check_meals(void *ptr)
 {

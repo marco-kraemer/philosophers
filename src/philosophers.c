@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 08:26:40 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/13 09:48:54 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/13 10:00:35 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,31 +43,28 @@ void	create_threads(t_data *data)
 
 int	main(int argc, char **argv)
 {
-	t_data	*data;
-	int		i;
+	t_data		*data;
+	static int	i;
 
 	if (argc != 5 && argc != 6)
 		return (1);
 	data = malloc(sizeof(t_data) * ft_atoi(argv[1]));
-	i = 0;
 	while (i < ft_atoi(argv[1]))
 	{
 		data[i].num_philosophers = ft_atoi(argv[1]);
 		data[i].time_to_die = ft_atoi(argv[2]);
 		data[i].time_to_eat = ft_atoi(argv[3]);
 		data[i].time_to_sleep = ft_atoi(argv[4]);
+		data[i].time_must_eat = -1;
 		if (argv[5])
 			data[i].time_must_eat = ft_atoi(argv[5]);
-		else
-			data[i].time_must_eat = -1;
 		pthread_mutex_init(&data[i].right_fork, NULL);
 		if (i != 0)
 			data[i].left_fork = &data[i - 1].right_fork;
 		data[i].start_time = get_time();
 		data[i].philosopher = i + 1;
 		data[i].last_time_eat = data[i].start_time;
-		data[i].counter = 0;
-		i++;
+		data[i++].counter = 0;
 	}
 	data[0].left_fork = &data[data[0].num_philosophers - 1].right_fork;
 	create_threads(data);
