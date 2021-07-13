@@ -6,13 +6,13 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 18:35:37 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/08 13:44:36 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/13 09:40:57 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
-int		conversion(const char *nptr, int i, int value)
+int	conversion(const char *nptr, int i, int value)
 {
 	while (nptr[i] > 47 && nptr[i] < 58)
 	{
@@ -22,7 +22,7 @@ int		conversion(const char *nptr, int i, int value)
 	return (value);
 }
 
-int		ft_atoi(const char *nptr)
+int	ft_atoi(const char *nptr)
 {
 	size_t	i;
 	size_t	j;
@@ -32,7 +32,7 @@ int		ft_atoi(const char *nptr)
 	i = 0;
 	value = 0;
 	while (nptr[i] == ' ' || nptr[i] == '\n' || nptr[i] == '\v'
-			|| nptr[i] == '\t' || nptr[i] == '\r' || nptr[i] == '\f')
+		|| nptr[i] == '\t' || nptr[i] == '\r' || nptr[i] == '\f')
 		i++;
 	if (nptr[i] == '-' || nptr[i] == '+')
 	{

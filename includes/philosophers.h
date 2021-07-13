@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 11:22:27 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/12 14:53:51 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/13 09:49:19 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,12 @@ typedef	struct s_data {
 }		t_data;
 
 int		ft_atoi(const char *nptr);
+
+void	wait(int length);
+long	get_time(void);
+
+void	*start_simulation(void *arg);
+void	*check_meals(void *ptr);
+void	*check_death(void *ptr);
 
 #endif
