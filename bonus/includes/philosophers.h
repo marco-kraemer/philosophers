@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 11:22:27 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/13 09:49:19 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/13 12:11:21 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,15 @@
 # define FALSE 0
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
 #include <unistd.h>
+#include <sys/wait.h>
 #include <pthread.h>
+#include <semaphore.h>
 #include <sys/time.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 typedef	struct s_data {
 	int	philosopher;
@@ -32,23 +38,10 @@ typedef	struct s_data {
 	int	time_must_eat;
 	int	counter;
 
-	pthread_mutex_t	right_fork;
-	pthread_mutex_t	*left_fork;
-
-	pthread_mutex_t	*state;
-	pthread_mutex_t	*meals;
-
 	long	last_time_eat;
 	long	start_time;
 }		t_data;
 
 int		ft_atoi(const char *nptr);
-
-void	wait(int length);
-long	get_time(void);
-
-void	*start_simulation(void *arg);
-void	*check_meals(void *ptr);
-void	*check_death(void *ptr);
 
 #endif
