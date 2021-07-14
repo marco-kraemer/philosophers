@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 11:22:27 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/13 12:11:21 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/14 09:55:20 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef	struct s_data {
 	int	philosopher;
 
 	int	num_philosophers;
+	int	num_forks;
 	int	time_to_die;
 	int	time_to_eat;
 	int	time_to_sleep;
@@ -40,6 +41,9 @@ typedef	struct s_data {
 
 	long	last_time_eat;
 	long	start_time;
+
+	pthread_mutex_t	*state;
+	pthread_mutex_t	*meals;
 }		t_data;
 
 int		ft_atoi(const char *nptr);
