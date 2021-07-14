@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 11:03:57 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/14 11:01:35 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/14 15:25:51 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void	*check_death(void *ptr)
 			&& data->counter >= data->time_must_eat)
 		{
 			ft_wait((float)data->philosopher);
-			pthread_mutex_unlock(data->meals);
 			exit (0);
 		}
 	}
@@ -103,11 +102,9 @@ void	create_process(t_data *data)
 	sem_t *semaphore;
 	pid_t pids[data[0].num_philosophers];
 	int	 i;
-	pthread_mutex_t		meals;
 
 	semaphore = sem_open(SEM_NAME, O_CREAT | O_EXCL, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP, data[0].num_forks);
 	sem_close(semaphore);
-	pthread_mutex_init(&meals, NULL);
 	i = 0;
 	while (i < data[0].num_philosophers)
 	{
@@ -123,7 +120,6 @@ void	create_process(t_data *data)
 		i++;
 	}
 	sem_unlink(SEM_NAME);
-	pthread_mutex_destroy(&meals);
 }
 
 int	main(int argc, char **argv)
