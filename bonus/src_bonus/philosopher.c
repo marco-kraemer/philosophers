@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 11:03:57 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/14 15:46:09 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/14 15:46:31 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,12 +115,11 @@ void	create_process(t_data *data)
 		}
 		i++;
 	}
-	i = 0;
+	sem_unlink(SEM_NAME);
 	waitpid(-1, NULL, 0);
 	i = 0;
 	while (i < data[0].num_philosophers)
 		kill(pids[i++], SIGTERM);
-	sem_unlink(SEM_NAME);
 }
 
 int	main(int argc, char **argv)
