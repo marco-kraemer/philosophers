@@ -6,12 +6,12 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 11:03:57 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/14 15:39:03 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/14 15:46:09 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
-#define	SEM_NAME "as"
+#define	SEM_NAME "nadsdasd"
 
 long	get_time(void)
 {
@@ -110,11 +110,16 @@ void	create_process(t_data *data)
 	{
 		pids[i] = fork();
 		if (pids[i] == 0)
+		{
 			start_simulation(&data[i]);
+		}
 		i++;
 	}
 	i = 0;
 	waitpid(-1, NULL, 0);
+	i = 0;
+	while (i < data[0].num_philosophers)
+		kill(pids[i++], SIGTERM);
 	sem_unlink(SEM_NAME);
 }
 
