@@ -6,11 +6,12 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 11:03:57 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/13 12:14:02 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/14 09:26:31 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
+#define	SEM_NAME "sem"
 
 long	get_time(void)
 {
@@ -29,39 +30,42 @@ void	ft_wait(int length)
 		usleep(length);
 }
 
-void	start_simulation(t_data data, sem_t semaphore)
+void	start_simulation(t_data data)
 {
-	sem_wait(&semaphore);
-	printf("Process number %i entered semaphore\n", data.philosopher);
+	sem_t *semaphore;
+
+	semaphore = sem_open(SEM_NAME, O_RDWR);
+	sem_wait(semaphore);
+	printf("PID %ld PHILOSOPHER: %i acquired semaphore\n", (long) getpid(), data.philosopher);
 	sleep(1);
-	printf("Process number %i exited semaphore\n", data.philosopher);
-	sem_post(&semaphore);
+	sem_post(semaphore);
+	printf("PID %ld PHILOSOPHER: %i exited semaphore\n", (long) getpid(), data.philosopher);
+	sem_close(semaphore);
 }
 
 void	create_process(t_data *data)
 {
-	int	i;
-	pid_t	pid;
-	sem_t	*semaphore;
-	
+	sem_t *semaphore;
+	pid_t pids[data[0].num_philosophers];
+	int	 i;
+
+	semaphore = sem_open(SEM_NAME, O_CREAT | O_EXCL, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP, 1);
+	sem_close(semaphore);
 	i = 0;
-	semaphore = sem_open("semaphore", O_CREAT, 777, 2);
 	while (i < data[0].num_philosophers)
 	{
-		pid = fork();
-		if (pid == 0)
-		{
-			start_simulation(data[i], *semaphore);
-			exit(0);
-		}
+		pids[i] = fork();
+		if (pids[i] == 0)
+			start_simulation(data[i]);
 		i++;
 	}
 	i = 0;
 	while (i < data[0].num_philosophers)
 	{
-		wait(NULL);
+		waitpid(pids[i], NULL, 0);
 		i++;
 	}
+	sem_unlink(SEM_NAME);
 }
 
 int	main(int argc, char **argv)
