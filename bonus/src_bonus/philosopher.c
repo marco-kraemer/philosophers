@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 11:03:57 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/15 08:05:20 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/15 08:08:13 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	start_simulation(t_data *data)
 	pthread_t	th;
 
 	semaphore = sem_open(SEM_NAME, O_RDWR);
-	pthread_create(&th, NULL, check_death, &data[0]);
+	pthread_create(&th, NULL, check_death, &data);
 	if ((data->philosopher % 2) == 0)
 		ft_wait(data->time_to_eat + 0.0001);
 	while (TRUE)
@@ -129,27 +129,27 @@ void	create_process(t_data *data)
 	int	 i;
 	pthread_t	th;
 
-	semaphore = sem_open(SEM_NAME, O_CREAT | O_EXCL, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP, data[0].num_forks);
+	semaphore = sem_open(SEM_NAME, O_CREAT | O_EXCL, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP, data->num_forks);
 	data->meals = sem_open(SEM_NAME2, O_CREAT | O_EXCL, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP, 0);
-	data[0].pids = malloc(sizeof(pid_t) * data[0].num_philosophers);
+	data->pids = malloc(sizeof(pid_t) * data->num_philosophers);
 	sem_close(semaphore);
 	i = 0;
-	while (i < data[0].num_philosophers)
+	while (i < data->num_philosophers)
 	{
-		data[0].pids[i] = fork();
-		if (data[0].pids[i] == 0)
+		data->pids[i] = fork();
+		if (data->pids[i] == 0)
 		{
-			data[0].philosopher = i + 1;
-			start_simulation(&data[0]);
+			data->philosopher = i + 1;
+			start_simulation(&data);
 		}
 		i++;
 	}
-	if (data[0].time_must_eat > -1)
-		pthread_create(&th, NULL, meal_loop, &data[0]);
+	if (data->time_must_eat > -1)
+		pthread_create(&th, NULL, meal_loop, &data);
 	waitpid(-1, NULL, 0);
 	i = 0;
-	while (i < data[0].num_philosophers)
-		kill(data[0].pids[i++], SIGTERM);
+	while (i < data->num_philosophers)
+		kill(data->pids[i++], SIGTERM);
 	sem_close(data->meals);
 	sem_unlink(SEM_NAME);
 	sem_unlink(SEM_NAME2);
@@ -162,21 +162,18 @@ int	main(int argc, char **argv)
 
 	if (argc != 5 && argc != 6)
 		return (1);
-	data = malloc(sizeof(t_data) * ft_atoi(argv[1]));
-	while (i < ft_atoi(argv[1]))
-	{
-		data[i].num_philosophers = ft_atoi(argv[1]);
-		data[i].num_forks = ft_atoi(argv[1]);
-		data[i].time_to_die = ft_atoi(argv[2]);
-		data[i].time_to_eat = ft_atoi(argv[3]);
-		data[i].time_to_sleep = ft_atoi(argv[4]);
-		data[i].time_must_eat = -1;
-		if (argv[5])
-			data[i].time_must_eat = ft_atoi(argv[5]);
-		data[i].start_time = get_time();
-		data[i].philosopher = i + 1;
-		data[i].last_time_eat = data[i].start_time;
-		data[i++].counter = 0;
-	}
+	data = malloc(sizeof(t_data));
+	data->num_philosophers = ft_atoi(argv[1]);
+	data->num_forks = ft_atoi(argv[1]);
+	data->time_to_die = ft_atoi(argv[2]);
+	data->time_to_eat = ft_atoi(argv[3]);
+	data->time_to_sleep = ft_atoi(argv[4]);
+	data->time_must_eat = -1;
+	if (argv[5])
+		data->time_must_eat = ft_atoi(argv[5]);
+	data->start_time = get_time();
+	data->philosopher = i + 1;
+	data->last_time_eat = data->start_time;
+	data->counter = 0;
 	create_process(data);
 }
