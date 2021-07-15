@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 11:22:27 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/15 07:46:25 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/15 08:25:33 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # define USEC_TO_MS 1000
 # define TRUE 1
 # define FALSE 0
+# define SEM_NAME "naddasssdasd"
+# define SEM_NAME2 "kadsaasdasd"
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
@@ -49,5 +51,11 @@ typedef	struct s_data {
 }		t_data;
 
 int		ft_atoi(const char *nptr);
-
+void	start_simulation(t_data data);
+void	printf_message(int rule, t_data data);
+void	create_process(t_data data);
+void	*check_meals(void *ptr);
+void	*check_death(void *ptr);
+long	get_time(void);
+void	ft_wait(int length);
 #endif
