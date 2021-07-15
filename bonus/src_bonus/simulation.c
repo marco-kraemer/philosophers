@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 08:23:16 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/15 08:24:17 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/15 08:27:06 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	printf_message(int rule, t_data data)
 
 void	start_simulation(t_data data)
 {
-	sem_t *semaphore;
+	sem_t		*semaphore;
 	pthread_t	th;
 
 	semaphore = sem_open(SEM_NAME, O_RDWR);

@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 08:22:54 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/15 08:23:04 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/15 11:27:06 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ long	get_time(void)
 	struct timeval	current;
 
 	gettimeofday(&current, NULL);
-	return (TIME_MS);
+	return (current.tv_sec * 1000 + current.tv_usec / 1000);
 }
 
 void	ft_wait(int length)

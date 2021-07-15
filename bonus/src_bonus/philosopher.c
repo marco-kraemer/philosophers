@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 11:03:57 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/15 08:24:22 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/15 11:12:29 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,10 @@
 
 void	create_process(t_data data)
 {
-	sem_t *semaphore;
-	int	 i;
+	int			i;
 	pthread_t	th;
 
-	semaphore = sem_open(SEM_NAME, O_CREAT | O_EXCL, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP, data.num_forks);
-	data.meals = sem_open(SEM_NAME2, O_CREAT | O_EXCL, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP, 0);
 	data.pids = malloc(sizeof(pid_t) * data.num_philosophers);
-	sem_close(semaphore);
 	i = 0;
 	while (i < data.num_philosophers)
 	{
@@ -48,6 +44,7 @@ int	main(int argc, char **argv)
 {
 	t_data		data;
 	static int	i;
+	sem_t		*semaphore;
 
 	if (argc != 5 && argc != 6)
 		return (1);
@@ -63,5 +60,10 @@ int	main(int argc, char **argv)
 	data.philosopher = i + 1;
 	data.last_time_eat = data.start_time;
 	data.counter = 0;
+	semaphore = sem_open(SEM_NAME, O_CREAT | O_EXCL,
+			S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP, data.num_forks);
+	sem_close(semaphore);
+	data.meals = sem_open(SEM_NAME2, O_CREAT | O_EXCL,
+			S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP, 0);
 	create_process(data);
 }

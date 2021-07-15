@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 08:21:43 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/15 08:22:28 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/15 08:28:13 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	*check_death(void *ptr)
 {
 	t_data	*data;
 	int		check;
-	
+
 	data = (t_data *)ptr;
 	check = 1;
 	while (TRUE)

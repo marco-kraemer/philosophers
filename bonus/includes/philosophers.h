@@ -6,45 +6,45 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 11:22:27 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/15 08:25:33 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/15 11:16:07 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHERS
-# define PHILOSOPHERS
-# define TIME_MS current.tv_sec * 1000 + current.tv_usec / 1000
+#ifndef PHILOSOPHERS_H
+# define PHILOSOPHERS_H
+# include <stdio.h>
+# include <stdlib.h>
+# include <signal.h>
+# include <unistd.h>
+# include <sys/wait.h>
+# include <pthread.h>
+# include <semaphore.h>
+# include <sys/time.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
+
 # define USEC_TO_MS 1000
 # define TRUE 1
 # define FALSE 0
-# define SEM_NAME "naddasssdasd"
-# define SEM_NAME2 "kadsaasdasd"
-#include <stdio.h>
-#include <stdlib.h>
-#include <signal.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <pthread.h>
-#include <semaphore.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+# define SEM_NAME "naddasssaasasdasd"
+# define SEM_NAME2 "kadsaasaasdadasd"
 
-typedef	struct s_data {
-	int	philosopher;
+typedef struct s_data {
+	int		philosopher;
 
-	int	num_philosophers;
-	int	num_forks;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	time_must_eat;
-	int	counter;
+	int		num_philosophers;
+	int		num_forks;
+	int		time_to_die;
+	int		time_to_eat;
+	int		time_to_sleep;
+	int		time_must_eat;
+	int		counter;
 
 	long	last_time_eat;
 	long	start_time;
 
-	int	pid_num;
+	int		pid_num;
 
 	sem_t	*meals;
 	pid_t	*pids;
