@@ -6,12 +6,13 @@
 /*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 11:03:57 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/14 15:52:20 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/07/15 08:05:20 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 #define	SEM_NAME "nadsdasd"
+#define	SEM_NAME2 "kadsdasd"
 
 long	get_time(void)
 {
@@ -46,11 +47,35 @@ void	printf_message(int rule, t_data *data)
 			data->philosopher);
 }
 
+void	*meal_loop(void *ptr)
+{
+	t_data	*data;
+	int		i;
+
+	data = (t_data *)ptr;
+	i = 0;
+	while (i < data->num_philosophers)
+	{
+		sem_wait(data->meals);
+		i++;
+	}
+	i = 0;
+	printf("Everyone has eaten!\n");
+	while (i < data->num_philosophers)
+		kill(data->pids[i++], SIGTERM);
+	free(data->pids);
+	sem_unlink(SEM_NAME);
+	sem_unlink(SEM_NAME2);
+	exit(0);
+}
+
 void	*check_death(void *ptr)
 {
 	t_data	*data;
-
+	int		check;
+	
 	data = (t_data *)ptr;
+	check = 1;
 	while (TRUE)
 	{
 		if (get_time() - data->last_time_eat > data->time_to_die)
@@ -60,11 +85,11 @@ void	*check_death(void *ptr)
 			exit(0);
 		}
 		else if (data->time_must_eat != -1
-			&& data->counter >= data->time_must_eat)
+			&& data->counter >= data->time_must_eat && check)
 		{
-			ft_wait((float)data->philosopher);
-			printf("Everyone has eaten\n");
-			exit (0);
+			sem_post(data->meals);
+			check = 0;
+			return (NULL);
 		}
 	}
 	return (NULL);
@@ -76,7 +101,7 @@ void	start_simulation(t_data *data)
 	pthread_t	th;
 
 	semaphore = sem_open(SEM_NAME, O_RDWR);
-	pthread_create(&th, NULL, check_death, data);
+	pthread_create(&th, NULL, check_death, &data[0]);
 	if ((data->philosopher % 2) == 0)
 		ft_wait(data->time_to_eat + 0.0001);
 	while (TRUE)
@@ -101,24 +126,33 @@ void	start_simulation(t_data *data)
 void	create_process(t_data *data)
 {
 	sem_t *semaphore;
-	pid_t pids[data[0].num_philosophers];
 	int	 i;
+	pthread_t	th;
 
 	semaphore = sem_open(SEM_NAME, O_CREAT | O_EXCL, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP, data[0].num_forks);
+	data->meals = sem_open(SEM_NAME2, O_CREAT | O_EXCL, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP, 0);
+	data[0].pids = malloc(sizeof(pid_t) * data[0].num_philosophers);
 	sem_close(semaphore);
 	i = 0;
 	while (i < data[0].num_philosophers)
 	{
-		pids[i] = fork();
-		if (pids[i] == 0)
-			start_simulation(&data[i]);
+		data[0].pids[i] = fork();
+		if (data[0].pids[i] == 0)
+		{
+			data[0].philosopher = i + 1;
+			start_simulation(&data[0]);
+		}
 		i++;
 	}
+	if (data[0].time_must_eat > -1)
+		pthread_create(&th, NULL, meal_loop, &data[0]);
 	waitpid(-1, NULL, 0);
 	i = 0;
 	while (i < data[0].num_philosophers)
-		kill(pids[i++], SIGTERM);
+		kill(data[0].pids[i++], SIGTERM);
+	sem_close(data->meals);
 	sem_unlink(SEM_NAME);
+	sem_unlink(SEM_NAME2);
 }
 
 int	main(int argc, char **argv)
