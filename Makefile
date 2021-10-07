@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+         #
+#    By: maraurel <maraurel@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/01 11:22:06 by maraurel          #+#    #+#              #
-#    Updated: 2021/07/13 11:09:35 by maraurel         ###   ########.fr        #
+#    Updated: 2021/10/07 15:24:12 by maraurel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,16 +39,16 @@ all: $(NAME) $(OBJ)
 bonus: $(NAME_BONUS) $(OBJ_BONUS)
 
 $(NAME): $(OBJ)
-	@$(CC) $(FLAGS) $(OBJ) -lpthread -o $(NAME)
+	$(CC) $(FLAGS) $(OBJ) -lpthread -o $(NAME)
 
 $(NAME_BONUS): $(OBJ_BONUS)
-	@$(CC) $(FLAGS) $(OBJ_BONUS) -lpthread -o $(NAME_BONUS)
+	$(CC) $(FLAGS) $(OBJ_BONUS) -lpthread -o $(NAME_BONUS)
 
 $(OBJ_PATH)/%.o:	$(SRC_PATH)/%.c
-	@$(CC) -g $(FLAGS) -c $< -o $@
+	$(CC) -g $(FLAGS) -c $< -o $@
 
 $(OBJ_BONUS_PATH)/%.o:	$(SRC_BONUS_PATH)/%.c
-	@$(CC) -g $(FLAGS) -c $< -o $@
+	$(CC) -g $(FLAGS) -c $< -o $@
 
 fclean: clean
 	@$(RM) $(NAME)

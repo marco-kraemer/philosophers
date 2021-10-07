@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simulation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
+/*   By: maraurel <maraurel@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 09:47:01 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/13 09:54:15 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/10/07 16:02:48 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	*start_simulation(void *arg)
 	pthread_create(&th, NULL, check_death, data);
 	if ((data->philosopher % 2) == 0)
 		wait(((float)data->time_to_eat) * 0.9 + 1);
-	while (TRUE)
+	while (data->check_end == 0)
 	{
 		pthread_mutex_lock(&data->right_fork);
 		printf_message(0, data);

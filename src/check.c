@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
+/*   By: maraurel <maraurel@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 09:46:58 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/13 09:50:07 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/10/07 16:03:23 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	*check_death(void *ptr)
 		{
 			printf("%ld %i died\n", (get_time() - data->start_time),
 				data->philosopher);
+			data->check_end = 1;
 			pthread_mutex_unlock(data->state);
 			return (NULL);
 		}
