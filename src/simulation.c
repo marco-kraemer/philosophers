@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 09:47:01 by maraurel          #+#    #+#             */
-/*   Updated: 2021/10/07 16:02:48 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/10/07 16:10:01 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,6 @@ void	*start_simulation(void *arg)
 		wait(data->time_to_sleep);
 		printf_message(3, data);
 	}
+	pthread_join(th, NULL);
 	return (arg);
 }
