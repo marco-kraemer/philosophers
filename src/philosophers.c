@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 08:26:40 by maraurel          #+#    #+#             */
-/*   Updated: 2021/10/07 16:06:30 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/10/08 11:39:32 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ void	create_threads(t_data *data)
 	pthread_mutex_t		state;
 	pthread_mutex_t		meals;
 	int				check_end;
+	int				check_end_meals;
 
 	check_end = 0;
+	check_end_meals = 0;
 	pthread_mutex_init(&state, NULL);
 	pthread_mutex_init(&meals, NULL);
 	pthread_mutex_lock(&state);
@@ -29,12 +31,17 @@ void	create_threads(t_data *data)
 	{
 		data[i].state = &state;
 		data[i].meals = &meals;
-		data[i].check_end = check_end;
+		data[i].check_end = &check_end;
+		data[i].check_end_meals = &check_end_meals;
 		pthread_create(&data[i].th, NULL, start_simulation, &data[i]);
 		i++;
 	}
+
+
 	if (data[0].time_must_eat != -1)
 		pthread_create(&th, NULL, check_meals, &data[0]);
+
+
 	pthread_mutex_lock(&state);
 
 
@@ -45,13 +52,14 @@ void	create_threads(t_data *data)
 	while (i < data[0].num_philosophers)
 		pthread_mutex_destroy(&data[i++].right_fork);
 	pthread_mutex_destroy(&state);
-	pthread_mutex_destroy(&meals);
-
 	i = 0;
 	while (i < data[0].num_philosophers)
-		pthread_join(data[i++].th, NULL);
-	
-	
+	{
+		pthread_join(data[i].th, NULL);
+		i++;
+	}
+	if (data[0].time_must_eat != -1)
+		pthread_join(th, NULL);
 	free(data);
 }
 

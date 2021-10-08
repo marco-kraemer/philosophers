@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 11:22:27 by maraurel          #+#    #+#             */
-/*   Updated: 2021/10/07 15:59:50 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/10/08 11:15:55 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ typedef struct s_data {
 	long			last_time_eat;
 	
 	pthread_t			th;
-	int				check_end;
+	int				*check_end;
+	int				*check_end_meals;
 }		t_data;
 
 int		ft_atoi(const char *nptr);
