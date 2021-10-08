@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 09:46:58 by maraurel          #+#    #+#             */
-/*   Updated: 2021/10/08 11:45:05 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/10/08 12:04:37 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*check_meals(void *ptr)
 	i = 0;
 	while (*data->check_end == 0 && *data->check_end_meals < data->num_philosophers)
 		i++;
-//	if (data->check_end == 0)
+	if (*data->check_end_meals >= data->num_philosophers)
 		printf("Nobody is dead!\n");
 	pthread_mutex_unlock(data->state);
 	return (NULL);
