@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 11:22:27 by maraurel          #+#    #+#             */
-/*   Updated: 2021/10/08 11:15:55 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/10/08 12:25:43 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,12 @@ typedef struct s_data {
 	pthread_mutex_t	right_fork;
 	pthread_mutex_t	*left_fork;
 
-	pthread_mutex_t	*meals;
 	pthread_mutex_t	*state;
 
 	long			start_time;
 	long			last_time_eat;
-	
-	pthread_t			th;
+
+	pthread_t		th;
 	int				*check_end;
 	int				*check_end_meals;
 }		t_data;

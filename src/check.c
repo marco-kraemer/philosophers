@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 09:46:58 by maraurel          #+#    #+#             */
-/*   Updated: 2021/10/08 12:04:37 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/10/08 12:22:26 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,16 @@
 
 void	*check_meals(void *ptr)
 {
-	int	i;
+	int		i;
 	t_data	*data;
 
 	data = (t_data *)ptr;
 	i = 0;
-	while (*data->check_end == 0 && *data->check_end_meals < data->num_philosophers)
+	while (*data->check_end == 0
+		&& *data->check_end_meals < data->num_philosophers)
 		i++;
 	if (*data->check_end_meals >= data->num_philosophers)
-		printf("Nobody is dead!\n");
+		printf("All philosophers ate at least %i times!\n", data->time_must_eat);
 	pthread_mutex_unlock(data->state);
 	return (NULL);
 }
