@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
+/*   By: maraurel <maraurel@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 08:21:43 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/15 08:28:13 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/10/10 13:33:25 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,12 @@ void	*check_meals(void *ptr)
 		i++;
 	}
 	i = 0;
-	printf("Everyone has eaten!\n");
-	while (i < data->num_philosophers)
-		kill(data->pids[i++], SIGTERM);
+	printf("All philosophers ate at least %i times!\n", data->time_must_eat);
 	free(data->pids);
 	sem_unlink(SEM_NAME);
 	sem_unlink(SEM_NAME2);
 	exit(0);
+	return (ptr);
 }
 
 void	*check_death(void *ptr)

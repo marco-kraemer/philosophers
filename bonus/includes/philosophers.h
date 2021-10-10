@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
+/*   By: maraurel <maraurel@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 11:22:27 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/15 11:16:07 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/10/10 13:31:04 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # define USEC_TO_MS 1000
 # define TRUE 1
 # define FALSE 0
-# define SEM_NAME "naddasssaasasdasd"
-# define SEM_NAME2 "kadsaasaasdadasd"
+# define SEM_NAME "semname01"
+# define SEM_NAME2 "semname02"
 
 typedef struct s_data {
 	int		philosopher;
@@ -45,6 +45,8 @@ typedef struct s_data {
 	long	start_time;
 
 	int		pid_num;
+
+	int		*check_end;
 
 	sem_t	*meals;
 	pid_t	*pids;

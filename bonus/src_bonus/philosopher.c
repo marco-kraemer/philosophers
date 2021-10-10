@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maraurel <maraurel@student.42sp>           +#+  +:+       +#+        */
+/*   By: maraurel <maraurel@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 11:03:57 by maraurel          #+#    #+#             */
-/*   Updated: 2021/07/15 11:12:29 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/10/10 13:33:21 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,16 @@
 void	create_process(t_data data)
 {
 	int			i;
-	pthread_t	th;
+	pid_t	pid;
 
 	data.pids = malloc(sizeof(pid_t) * data.num_philosophers);
 	i = 0;
+	if (data.time_must_eat != -1)
+	{
+		pid = fork();
+		if (pid == 0)
+			check_meals((void *) &data);
+	}
 	while (i < data.num_philosophers)
 	{
 		data.pids[i] = fork();
@@ -29,8 +35,6 @@ void	create_process(t_data data)
 		}
 		i++;
 	}
-	if (data.time_must_eat > -1)
-		pthread_create(&th, NULL, check_meals, &data);
 	waitpid(-1, NULL, 0);
 	i = 0;
 	while (i < data.num_philosophers)
