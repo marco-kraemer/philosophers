@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 11:22:27 by maraurel          #+#    #+#             */
-/*   Updated: 2021/10/10 13:31:04 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/10/11 11:28:44 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # define USEC_TO_MS 1000
 # define TRUE 1
 # define FALSE 0
-# define SEM_NAME "semname01"
-# define SEM_NAME2 "semname02"
+# define SEM_NAME "/semname01"
+# define SEM_NAME2 "/semname02"
 
 typedef struct s_data {
 	int		philosopher;
@@ -41,21 +41,20 @@ typedef struct s_data {
 	int		time_must_eat;
 	int		counter;
 
-	long	last_time_eat;
-	long	start_time;
+	long		last_time_eat;
+	long		start_time;
 
 	int		pid_num;
 
 	int		*check_end;
+	int		check_end_meals;
 
-	sem_t	*meals;
-	pid_t	*pids;
+	sem_t		*meals;
+	sem_t		*forks;
+	pid_t	*	pids;
 }		t_data;
 
 int		ft_atoi(const char *nptr);
-void	start_simulation(t_data data);
-void	printf_message(int rule, t_data data);
-void	create_process(t_data data);
 void	*check_meals(void *ptr);
 void	*check_death(void *ptr);
 long	get_time(void);

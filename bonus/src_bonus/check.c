@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 08:21:43 by maraurel          #+#    #+#             */
-/*   Updated: 2021/10/10 13:33:25 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/10/11 22:32:53 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,34 +25,40 @@ void	*check_meals(void *ptr)
 		i++;
 	}
 	i = 0;
-	printf("All philosophers ate at least %i times!\n", data->time_must_eat);
-	free(data->pids);
+	while (i < data->num_philosophers)
+	{
+		kill(data->pids[i], 15);
+		i++;
+	}
 	sem_unlink(SEM_NAME);
 	sem_unlink(SEM_NAME2);
-	exit(0);
+	*(data->check_end) = 1;
 	return (ptr);
 }
 
 void	*check_death(void *ptr)
 {
 	t_data	*data;
-	int		check;
+	int	i;
 
+	i = -1;
 	data = (t_data *)ptr;
-	check = 1;
 	while (TRUE)
 	{
 		if (get_time() - data->last_time_eat > data->time_to_die)
 		{
 			printf("%ld %i died\n", (get_time() - data->start_time),
 				data->philosopher);
-			exit(0);
+			*(data->check_end) = 1;
+			while (++i < data->num_philosophers)
+				sem_post(data->meals);
+			return (NULL);
 		}
 		else if (data->time_must_eat != -1
-			&& data->counter >= data->time_must_eat && check)
+			&& data->counter >= data->time_must_eat)
 		{
+			data->check_end_meals++;
 			sem_post(data->meals);
-			check = 0;
 			return (NULL);
 		}
 	}
