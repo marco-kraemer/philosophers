@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 08:26:40 by maraurel          #+#    #+#             */
-/*   Updated: 2021/10/08 12:26:47 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/10/12 10:14:47 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,11 @@ void	create_threads(t_data *data, int check_end, int check_end_meals)
 	exit_threads(data, th, state);
 }
 
-int	main(int argc, char **argv)
+void	init_all(t_data *data, char **argv)
 {
-	t_data		*data;
-	static int	i;
+	int	i;
 
-	if (argc != 5 && argc != 6)
-		return (1);
-	data = malloc(sizeof(t_data) * ft_atoi(argv[1]));
+	i = 0;
 	while (i < ft_atoi(argv[1]))
 	{
 		data[i].num_philosophers = ft_atoi(argv[1]);
@@ -81,5 +78,34 @@ int	main(int argc, char **argv)
 		data[i++].counter = 0;
 	}
 	data[0].left_fork = &data[data[0].num_philosophers - 1].right_fork;
+}
+
+int	check_error(char **argv, int argc)
+{
+	int	i;
+	int	num;
+
+	if (argc != 5 && argc != 6)
+		return (1);
+	i = 1;
+	while (argv[i])
+	{
+		num = ft_atoi(argv[i]);
+		if (num <= 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	main(int argc, char **argv)
+{
+	t_data		*data;
+
+	if (check_error(argv, argc) == 1)
+		return (1);
+	data = malloc(sizeof(t_data) * ft_atoi(argv[1]));
+	init_all(data, argv);
 	create_threads(data, 0, 0);
+	return (0);
 }

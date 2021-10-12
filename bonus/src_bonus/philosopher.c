@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/13 11:03:57 by maraurel          #+#    #+#             */
-/*   Updated: 2021/10/12 09:50:08 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/10/12 10:15:19 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,30 @@ void	create_process(t_data *data)
 	exit_program(data, th);
 }
 
+int	check_error(char **argv, int argc)
+{
+	int	i;
+	int	num;
+
+	if (argc != 5 && argc != 6)
+		return (1);
+	i = 1;
+	while (argv[i])
+	{
+		num = ft_atoi(argv[i]);
+		if (num <= 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_data		data;
 	static int	i;
 
-	if (argc != 5 && argc != 6)
+	if (check_error(argv, argc) == 1)
 		return (1);
 	data.num_philosophers = ft_atoi(argv[1]);
 	data.num_forks = ft_atoi(argv[1]);
