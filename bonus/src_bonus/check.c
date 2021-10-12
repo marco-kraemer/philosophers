@@ -6,7 +6,7 @@
 /*   By: maraurel <maraurel@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 08:21:43 by maraurel          #+#    #+#             */
-/*   Updated: 2021/10/11 22:32:53 by maraurel         ###   ########.fr       */
+/*   Updated: 2021/10/12 09:50:35 by maraurel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	*check_meals(void *ptr)
 void	*check_death(void *ptr)
 {
 	t_data	*data;
-	int	i;
+	int		i;
 
 	i = -1;
 	data = (t_data *)ptr;
